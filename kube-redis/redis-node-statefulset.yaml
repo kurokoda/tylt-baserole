@@ -98,7 +98,16 @@ spec:
             - name: REDIS_SERVER_HOST
               value: '0.0.0.0'
             - name: REDIS_SERVER_PORT
-              value: '6379' 
+              value: '6379'
+            - name: HTTP_AUTH_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: globalvalues
+                  key: REDISADM_PASSWORD
+            - name: HTTP_AUTH_USER
+                configMapKeyRef:
+                  name: globalvalues
+                  key: REDISADM_USER
           envFrom:
           - configMapRef:
               name: globalvalues 
