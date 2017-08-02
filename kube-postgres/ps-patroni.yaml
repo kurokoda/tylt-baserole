@@ -207,7 +207,7 @@ spec:
           valueFrom:
             configMapKeyRef:
               name: globalvalues
-              key: POSTGRES_CRON           
+              key: PG_CRON           
         envFrom:
         - configMapRef:
             name: globalvalues
