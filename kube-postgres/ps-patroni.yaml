@@ -202,7 +202,12 @@ spec:
         - name: ETCD_HOST
           value: etcd.$(POD_NAMESPACE):2379
         - name: CALLBACK_SCRIPT
-          value: callback_role.py           
+          value: callback_role.py
+        - name: CRONTAB
+          valueFrom:
+            configMapKeyRef:
+              name: globalvalues
+              key: POSTGRES_CRON           
         envFrom:
         - configMapRef:
             name: globalvalues
