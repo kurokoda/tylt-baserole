@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: patroni 
+spec:
+  rules:
+  - host: patroni.NAMESPACE_VAR.kubernetes.thetylt.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: patroni
+          servicePort: 80

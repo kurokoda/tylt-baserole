@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: redis-commander
+spec:
+  rules:
+  - host: redisadm.NAMESPACE_VAR.kubernetes.thetylt.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: redis
+          servicePort: 8081

@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: rethinkdb
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+  - host: rethinkdb.NAMESPACE_VAR.kubernetes.thetylt.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: rethinkdb
+          servicePort: 8080

@@ -1,0 +1,128 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: redis
+  annotations:
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+spec:
+  serviceName: redis-nodes
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: redis-node
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        # Redis
+        - name: redis-node
+          image: redis:3.2
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/sh", "-c", "ln -nsf /mnt/tylt-redis-prod/${REDIS_BACKUP_FILE}.rdb /data/dump.rdb"]
+            preStop:
+              exec:
+                command: ["/bin/sh", "-c", "echo 'Dump' > /mnt/tylt-redis-prod/test.txt"]
+          command:
+            - redis-server
+          args:
+            - /config/node.conf
+          ports:
+            - name: redis
+              containerPort: 6379
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: redis-config
+              mountPath: /config
+            - name: backup-dir
+              mountPath: /mnt/tylt-redis-prod
+              readOnly: PRODUCTION_VAR
+          envFrom:
+          - configMapRef:
+              name: globalvalues
+          securityContext:
+            privileged: true
+          resources:
+            requests:
+              cpu: 100m
+              memory: 1Gi
+          livenessProbe: &healthcheck
+            exec:
+              command: [ "redis-cli", "ping" ]
+          readinessProbe:
+            <<: *healthcheck
+
+        # Sentinel
+        - name: redis-sentinel
+          image: redis:3.2
+          command: [ "bash", "-c", "touch sentinel.conf && redis-sentinel sentinel.conf" ]
+          ports:
+            - name: sentinel
+              containerPort: 26379
+          resources:
+            requests:
+              cpu: 25m
+              memory: 50Mi
+          livenessProbe: &healthcheck
+            exec:
+              command: [ "redis-cli", "-p", "26379", "ping" ]
+          readinessProbe:
+            <<: *healthcheck
+
+        # Sidecar
+        - name: redis-sidecar
+          image: commercialtribe/redis-sentinel-sidecar:v20170425.0
+          imagePullPolicy: Always
+          env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          volumeMounts:
+            - name: pod-info
+              mountPath: /etc/pod-info
+          readinessProbe:
+            exec:
+              command: [ "cat", "booted" ]
+          resources:
+            requests:
+              cpu: 25m
+              memory: 50Mi
+
+        # Redis-Commander
+        - name: redis-commander
+          image: ecardoso/redis-commander
+          env:
+            - name: REDIS_SERVER_HOST
+              value: '0.0.0.0'
+            - name: REDIS_SERVER_PORT
+              value: '6379' 
+          envFrom:
+          - configMapRef:
+              name: globalvalues 
+          ports:
+          - containerPort: 8081
+          livenessProbe:
+            tcpSocket:
+              port: 6379
+          readinessProbe:
+            tcpSocket:
+              port: 6379
+
+      volumes:
+        - name: pod-info
+          downwardAPI:
+            items:
+              - path: labels
+                fieldRef:
+                  fieldPath: metadata.labels
+        - name: redis-config
+          configMap:
+            name: redis-sentinel
+        - name: data
+          emptyDir: {}
+        - name: backup-dir
+          hostPath:
+            path: /mnt/s3-backup-share/tylt-redis-prod 
