@@ -105,6 +105,7 @@ spec:
                   name: globalvalues
                   key: REDISADM_PASSWORD
             - name: HTTP_AUTH_USER
+              valueFrom:
                 configMapKeyRef:
                   name: globalvalues
                   key: REDISADM_USER
