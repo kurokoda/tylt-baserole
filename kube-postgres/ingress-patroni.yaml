@@ -10,4 +10,4 @@ spec:
       - path: /
         backend:
           serviceName: patroni
-          servicePort: 80
+          servicePort: 5050

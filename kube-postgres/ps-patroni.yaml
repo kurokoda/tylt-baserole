@@ -254,13 +254,13 @@ spec:
           readOnly: PRODUCTION_VAR
 
       #adminer
-      - image: clue/adminer
-        name: adminer
+      - image: fenglc/pgadmin4 
+        name: pgadmin
         ports:
-        - containerPort: 80
+        - containerPort: 5050
         livenessProbe: &healthcheck
           tcpSocket:
-            port: 80
+            port: 5050
         readinessProbe:
           <<: *healthcheck
 
