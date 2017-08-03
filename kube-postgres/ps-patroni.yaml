@@ -263,6 +263,10 @@ spec:
             port: 5050
         readinessProbe:
           <<: *healthcheck
+        volumeMounts:
+        - name: backup-dir
+          mountPath: /mnt/tylt-pg-prod
+          readOnly: PRODUCTION_VAR
 
       volumes:
       - name: data
