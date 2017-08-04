@@ -1,7 +1,10 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: patroni 
+  name: patroni
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.frontend.priority: 100 
 spec:
   rules:
   - host: patroni.NAMESPACE_VAR.kubernetes.thetylt.com

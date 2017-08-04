@@ -4,6 +4,7 @@ metadata:
   name: rethinkdb
   annotations:
     kubernetes.io/ingress.class: traefik
+    traefik.frontend.priority: 100
 spec:
   rules:
   - host: rethinkdb.NAMESPACE_VAR.kubernetes.thetylt.com
