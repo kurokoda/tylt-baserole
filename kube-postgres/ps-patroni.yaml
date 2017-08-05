@@ -207,7 +207,7 @@ spec:
               - -ec
               - |
                 apt-get update && apt-get install at && atd
-                echo "pg_restore -cCOd postgres /mnt/tylt-pg-prod/${PG_BACKUP_FILE}.dump -U postgres --verbose" | at now + 1 min
+                echo "pg_restore -cCOd postgres /mnt/tylt-pg-prod/${PG_BACKUP_FILE}.dump -U postgres --verbose" | at now + 2 min
           preStop:
             exec:
               command:
