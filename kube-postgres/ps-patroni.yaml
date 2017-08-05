@@ -174,21 +174,8 @@ spec:
 
       #patroni
       - env:
-        - name: PGPASSWORD_SUPERUSER
-          valueFrom:
-            secretKeyRef:
-              key: password-superuser
-              name: patroni
-        - name: PGPASSWORD_ADMIN
-          valueFrom:
-            secretKeyRef:
-              key: password-admin
-              name: patroni
-        - name: PGPASSWORD_STANDBY
-          valueFrom:
-            secretKeyRef:
-              key: password-standby
-              name: patroni
+        - configMapRef:
+          name: globalvalues
         - name: SCOPE
           value: patroni
         - name: USE_WALE
