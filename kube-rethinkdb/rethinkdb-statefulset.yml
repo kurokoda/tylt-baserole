@@ -19,7 +19,7 @@ spec:
       #RethinkDB container
       - image: rethinkdb 
         imagePullPolicy: Always
-        name: rethinkdb
+        name: rosskukulinski/rethinkdb-kubernetes 
         envFrom:
         - configMapRef:
             name: globalvalues
