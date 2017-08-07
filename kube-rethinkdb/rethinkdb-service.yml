@@ -2,9 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  labels:
-    db: rethinkdb-cluster
-  name: rethinkdb-cluster
+  name: rethinkdb
   annotations:
     traefik.backend.loadbalancer.sticky: true
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
@@ -18,5 +16,4 @@ spec:
   - port: 8080
     name: admin
   selector:
-    db: rethinkdb
-    role: replica
+    app: rethinkdb
