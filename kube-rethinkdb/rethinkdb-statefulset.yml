@@ -17,32 +17,48 @@ spec:
       containers:
 
       #RethinkDB container
-      - image: gcr.io/google_containers/rethinkdb:1.16.0_1
-        imagePullPolicy: Always
-        name: rethinkdb 
-        envFrom:
-        - configMapRef:
-            name: globalvalues
+      - args:
+        - --directory
+        - /data/db
+        - --bind
+        - all
+        - --no-http-admin
+        - --cache-size
+        - "100"
         env:
+        - name: RETHINK_CLUSTER_SERVICE
+          value: rethinkdb-cluster
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.podIP
         - name: POD_NAMESPACE
           valueFrom:
             fieldRef:
+              apiVersion: v1
               fieldPath: metadata.namespace
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        image: codylundquist/helm-rethinkdb-cluster:0.1.0
+        livenessProbe:
+          exec:
+            command:
+            - /rethinkdb-probe
+        name: rethinkdb-cluster
         ports:
-        - containerPort: 8080
-          name: admin-port
-        - containerPort: 28015
-          name: driver-port
         - containerPort: 29015
-          name: cluster-port
+          name: cluster
+        readinessProbe:
+          exec:
+            command:
+            - /rethinkdb-probe
         volumeMounts:
         - mountPath: /data
-          name: data
-        livenessProbe: &healthcheck
-          tcpSocket:
-            port: 28015
-        readinessProbe:
-          <<: *healthcheck
+          name: datadir
 
       #RethinkDB python sidecar
       - image: python 
@@ -65,7 +81,7 @@ spec:
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       volumes:
-      - name: data
+      - name: datadir
         emptyDir: {}
       - name: backup-dir
         hostPath:
