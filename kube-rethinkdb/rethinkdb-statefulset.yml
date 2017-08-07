@@ -17,9 +17,9 @@ spec:
       containers:
 
       #RethinkDB container
-      - image: rethinkdb 
+      - image: gcr.io/google_containers/rethinkdb:1.16.0_1
         imagePullPolicy: Always
-        name: rosskukulinski/rethinkdb-kubernetes 
+        name: rethinkdb 
         envFrom:
         - configMapRef:
             name: globalvalues
@@ -28,26 +28,13 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        - name: POD_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
-        - name: POD_IP
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: status.podIP
-        - name: RETHINK_CLUSTER
-          value: rethinkdb
-        - name: USE_SERVICE_LOOKUP
-          value: "yes"
         ports:
         - containerPort: 8080
-          name: admin
+          name: admin-port
         - containerPort: 28015
-          name: driver
+          name: driver-port
         - containerPort: 29015
-          name: cluster
+          name: cluster-port
         volumeMounts:
         - mountPath: /data
           name: data
