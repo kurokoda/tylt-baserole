@@ -206,9 +206,7 @@ spec:
               - /bin/sh
               - -ec
               - |
-                echo 'placeholder'
-                #while ! pg_isready -d postgresql://postgres:$PGPASSWORD_ADMIN@localhost/postgres -q; do sleep 1 ; done;
-                #pg_restore -cCOd postgres /mnt/tylt-pg-prod/${PG_BACKUP_FILE}.dump -U postgres --verbose
+                ( while ! pg_isready -d postgresql://postgres:$PGPASSWORD_ADMIN@localhost/postgres -q; do sleep 1 ; done && pg_restore -cCOd postgres /mnt/tylt-pg-prod/${PG_BACKUP_FILE}.dump -U postgres --verbose ) &
           preStop:
             exec:
               command:
