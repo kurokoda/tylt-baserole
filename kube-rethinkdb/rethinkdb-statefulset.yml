@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
 
-
+      #RethinkDB container
       - image: rethinkdb 
         imagePullPolicy: Always
         name: rethinkdb
@@ -57,6 +57,7 @@ spec:
         readinessProbe:
           <<: *healthcheck
 
+      #RethinkDB python sidecar
       - image: python 
         imagePullPolicy: Always
         name: rethinkdb-sidecar
@@ -68,6 +69,7 @@ spec:
         envFrom:
         - configMapRef:
             name: globalvalues
+        volumeMounts:
         - name: backup-dir
           mountPath: /mnt/tylt-rethink-prod
           readOnly: PRODUCTION_VAR
