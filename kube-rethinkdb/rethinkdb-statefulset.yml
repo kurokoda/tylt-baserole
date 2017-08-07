@@ -22,11 +22,14 @@ spec:
         - /data/db
         - --bind
         - all
+        - --no-http-admin
         - --cache-size
         - "100"
         env:
         - name: RETHINK_CLUSTER_SERVICE
           value: rethinkdb-cluster
+        - name: RETHINKDB_PASSWORD
+          value: ''
         - name: POD_IP
           valueFrom:
             fieldRef:
