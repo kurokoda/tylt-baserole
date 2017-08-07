@@ -206,8 +206,8 @@ spec:
               - /bin/sh
               - -ec
               - |
-                apt-get update && apt-get install at && atd
-                echo "pg_restore -cCOd postgres /mnt/tylt-pg-prod/${PG_BACKUP_FILE}.dump -U postgres --verbose" | at now + 2 min
+                while ! curl --output /dev/null --silent --head --fail pg_isready -d postgresql://postgres:$PGPASSWORD_ADMIN@localhost/postgres ; do sleep 1 ; done;
+                pg_restore -cCOd postgres /mnt/tylt-pg-prod/${PG_BACKUP_FILE}.dump -U postgres --verbose
           preStop:
             exec:
               command:
