@@ -16,9 +16,6 @@ spec:
     spec:
       containers:
       - image: rethinkdb 
-        #args:
-        #  - "--cache-size"
-        #  - "100"
         imagePullPolicy: Always
         name: rethinkdb
         envFrom:
@@ -64,37 +61,17 @@ spec:
           name: driver
         - containerPort: 29015
           name: cluster
-        resources:
-          limits:
-            cpu: 100m
-            memory: 256Mi
-          requests:
-            cpu: 100m
-            memory: 256Mi
         volumeMounts:
         - mountPath: /data
           name: data
         - name: backup-dir
           mountPath: /mnt/tylt-rethink-prod
           readOnly: PRODUCTION_VAR
+        livenessProbe: &healthcheck
+          tcpSocket:
+            port: 28015
         readinessProbe:
-          exec:
-            command:
-            - /probe
-          failureThreshold: 3
-          initialDelaySeconds: 15
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 5
-        livenessProbe:
-          exec:
-            command:
-              - /probe
-          failureThreshold: 3
-          initialDelaySeconds: 15
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 5
+          <<: *healthcheck
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       volumes:
