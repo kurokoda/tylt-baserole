@@ -66,7 +66,7 @@ spec:
         - -ec
         - |
           pip install rethinkdb -v 
-          /usr/local/bin/rethinkdb-restore /mnt/tylt-rethink-prod/rethink_dump2017-08-07T06-00_utc.tar.gz --force 
+          /usr/local/bin/rethinkdb-restore /mnt/tylt-rethink-prod/${PG_BACKUP_FILE}.tar.gz --force 
         envFrom:
         - configMapRef:
             name: globalvalues
