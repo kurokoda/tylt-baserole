@@ -15,6 +15,8 @@ spec:
         role: replica
     spec:
       containers:
+
+
       - image: rethinkdb 
         imagePullPolicy: Always
         name: rethinkdb
@@ -39,21 +41,6 @@ spec:
           value: rethinkdb
         - name: USE_SERVICE_LOOKUP
           value: "yes"
-        lifecycle:
-          postStart:
-            exec:
-              command:
-              - /bin/sh
-              - -ec
-              - |
-                echo "hello world"
-          preStop:
-            exec:
-              command:
-              - /bin/sh
-              - -ec
-              - |
-                echo "Dump" > /mnt/tylt-rethink-prod/test.txt
         ports:
         - containerPort: 8080
           name: admin
@@ -64,14 +51,27 @@ spec:
         volumeMounts:
         - mountPath: /data
           name: data
-        - name: backup-dir
-          mountPath: /mnt/tylt-rethink-prod
-          readOnly: PRODUCTION_VAR
         livenessProbe: &healthcheck
           tcpSocket:
             port: 28015
         readinessProbe:
           <<: *healthcheck
+
+      - image: python 
+        imagePullPolicy: Always
+        name: rethinkdb-sidecar
+        command: 
+        - /bin/sh
+        - -ec
+        - |
+          pip install rethinkdb
+        envFrom:
+        - configMapRef:
+            name: globalvalues
+        - name: backup-dir
+          mountPath: /mnt/tylt-rethink-prod
+          readOnly: PRODUCTION_VAR
+
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       volumes:
