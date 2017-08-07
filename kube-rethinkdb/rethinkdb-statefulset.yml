@@ -69,6 +69,45 @@ spec:
         - mountPath: /data
           name: datadir
 
+      #Rethink Proxy
+      - args:
+        - --bind
+        - all
+        env:
+        - name: PROXY
+          value: "true"
+        - name: RETHINK_CLUSTER_SERVICE
+          value: rethinkdb
+        - name: RETHINKDB_PASSWORD
+          value: 'password'
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.podIP
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        image: codylundquist/helm-rethinkdb-cluster:0.1.0
+        name: rethinkdb-proxy
+        ports:
+        - containerPort: 29015
+          name: cluster
+          protocol: TCP
+        - containerPort: 28015
+          name: driver
+          protocol: TCP
+        - containerPort: 8080
+          name: admin
+          protocol: TCP
+
       #RethinkDB python sidecar
       - image: python 
         imagePullPolicy: Always
