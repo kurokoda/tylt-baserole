@@ -15,7 +15,7 @@ spec:
       initContainers:
       #RethinkDB statefulset
 
-      - name: rethinkdb
+      - name: rethinkdb-init
         image: rosskukulinski/rethinkdb-kubernetes
         args:
           - "--cache-size"
@@ -53,7 +53,7 @@ spec:
 
       - image: python 
         imagePullPolicy: Always
-        name: rethinkdb-sidecar
+        name: restore-init
         command: 
         - /bin/sh
         - -ec
