@@ -61,10 +61,6 @@ spec:
         volumeMounts:
         - mountPath: /data
           name: datadir
-        ports:
-        - containerPort: 29015
-          name: cluster
-          protocol: TCP
 
 
       #Rethink Proxy
