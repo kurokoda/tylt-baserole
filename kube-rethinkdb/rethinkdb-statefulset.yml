@@ -30,6 +30,16 @@ spec:
         - name: backup-dir
           mountPath: /mnt/tylt-rethink-prod
           readOnly: PRODUCTION_VAR
+        livenessProbe: &healthcheck
+          exec:
+            command:
+            - python
+            - -c
+            - |
+              import rethinkdb as r
+              r.connect('localhost', 28015, 'tylt-production')
+        readinessProbe:
+          <<: *healthcheck
 
       #RethinkDB statefulset
       - image: rosskukulinski/rethinkdb-kubernetes
@@ -57,6 +67,8 @@ spec:
         - name: USE_SERVICE_LOOKUP
           value: "yes"
         ports:
+        - containerPort: 8080
+          name: admin
         - containerPort: 28015
           name: driver
         - containerPort: 29015
@@ -80,47 +92,6 @@ spec:
             command:
               - /probe
 
-      #RethinkDB admin
-      - image: rosskukulinski/rethinkdb-kubernetes
-        imagePullPolicy: Always
-        name: rethinkdb-admin
-        env:
-        - name: PROXY
-          value: "true"
-        - name: POD_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-        - name: POD_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
-        - name: POD_IP
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: status.podIP
-        - name: RETHINK_CLUSTER
-          value: rethinkdb
-        ports:
-        - containerPort: 8080
-          name: driver
-        resources:
-          limits:
-            cpu: 100m
-            memory: 256Mi
-          requests:
-            cpu: 100m
-            memory: 256Mi
-        volumeMounts:
-        - mountPath: /data
-          name: data
-        livenessProbe: &healthcheck
-          tcpSocket:
-            port: 28015
-        readinessProbe:
-          <<: *healthcheck
- 
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       volumes:
