@@ -66,6 +66,7 @@ spec:
         - -ec
         - |
           pip install rethinkdb
+          rethinkdb restore -c 0.0.0.0:28015 /mnt/tylt-rethink-prod/rethink_dump2017-08-07T06-00_utc.tar.gz
         envFrom:
         - configMapRef:
             name: globalvalues
