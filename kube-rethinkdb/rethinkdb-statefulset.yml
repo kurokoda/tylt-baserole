@@ -11,6 +11,8 @@ spec:
     metadata:
       labels:
         app: rethinkdb 
+      annotations:
+        pod.alpha.kubernetes.io/initialized: "true"
     spec:
       initContainers:
       #RethinkDB statefulset
