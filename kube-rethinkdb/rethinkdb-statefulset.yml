@@ -92,9 +92,9 @@ spec:
         image: codylundquist/helm-rethinkdb-cluster:0.1.0
         name: rethinkdb-proxy
         ports:
-        - containerPort: 29015
-          name: cluster
-          protocol: TCP
+        #- containerPort: 29015
+        #  name: cluster
+        #  protocol: TCP
         - containerPort: 28015
           name: driver
           protocol: TCP
