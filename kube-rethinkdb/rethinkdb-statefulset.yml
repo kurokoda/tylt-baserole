@@ -25,13 +25,6 @@ spec:
         - --no-http-admin
         - --cache-size
         - "100"
-        ports:
-        - containerPort: 8080
-          name: admin
-        - containerPort: 28015
-          name: driver
-        - containerPort: 29015
-          name: cluster
         env:
         - name: RETHINK_CLUSTER_SERVICE
           value: rethinkdb-cluster
@@ -68,6 +61,11 @@ spec:
         volumeMounts:
         - mountPath: /data
           name: datadir
+        ports:
+        - containerPort: 29015
+          name: cluster
+          protocol: TCP
+
 
       #Rethink Proxy
       - args:
