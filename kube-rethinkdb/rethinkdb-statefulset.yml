@@ -115,15 +115,12 @@ spec:
         volumeMounts:
         - mountPath: /data
           name: data
+        livenessProbe: &healthcheck
+          tcpSocket:
+            port: 28015
         readinessProbe:
-          exec:
-            command:
-            - /probe
-        livenessProbe:
-          exec:
-            command:
-              - /probe
-
+          <<: *healthcheck
+ 
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       volumes:
