@@ -21,6 +21,9 @@ spec:
           - "100"
         imagePullPolicy: Always
         name: rethinkdb
+        envFrom:
+        - configMapRef:
+            name: globalvalues
         env:
         - name: POD_NAMESPACE
           valueFrom:
@@ -39,6 +42,21 @@ spec:
           value: rethinkdb
         - name: USE_SERVICE_LOOKUP
           value: "yes"
+        lifecycle:
+          postStart:
+            exec:
+              command:
+              - /bin/sh
+              - -ec
+              - |
+                rethinkdb restore -c localhost:28015 -p /mnt/tylt-rethink-prod/${RT_BACKUP_FILE}.tar.gz
+          preStop:
+            exec:
+              command:
+              - /bin/sh
+              - -ec
+              - |
+                echo "Dump" > /mnt/tylt-rethink-prod/test.txt
         ports:
         - containerPort: 8080
           name: admin
@@ -56,6 +74,9 @@ spec:
         volumeMounts:
         - mountPath: /data
           name: data
+        - name: backup-dir
+          mountPath: /mnt/tylt-rethink-prod
+          readOnly: PRODUCTION_VAR
         readinessProbe:
           exec:
             command:
@@ -79,3 +100,6 @@ spec:
       volumes:
       - name: data
         emptyDir: {}
+      - name: backup-dir
+        hostPath:
+          path: /mnt/s3-backup-share/tylt-rethink-prod
