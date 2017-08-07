@@ -22,7 +22,6 @@ spec:
         - /data/db
         - --bind
         - all
-        - --no-http-admin
         - --cache-size
         - "100"
         env:
