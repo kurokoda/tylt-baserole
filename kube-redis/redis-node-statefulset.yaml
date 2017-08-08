@@ -27,6 +27,7 @@ spec:
               mountPath: /mnt/tylt-redis-prod
               readOnly: PRODUCTION_VAR
       containers:
+
         # Redis
         - name: redis-node
           image: redis:3.2
@@ -113,15 +114,17 @@ spec:
             - name: REDIS_SERVER_PORT
               value: '6379'
             - name: HTTP_AUTH_PASSWORD
-              valueFrom:
-                configMapKeyRef:
-                  name: globalvalues
-                  key: REDISADM_PASSWORD
+              value: 'admin'
+              #valueFrom:
+              #  configMapKeyRef:
+              #    name: globalvalues
+              #    key: REDISADM_PASSWORD
             - name: HTTP_AUTH_USER
-              valueFrom:
-                configMapKeyRef:
-                  name: globalvalues
-                  key: REDISADM_USER
+              value: 'admin'
+              #valueFrom:
+              #  configMapKeyRef:
+              #    name: globalvalues
+              #    key: REDISADM_USER
           envFrom:
           - configMapRef:
               name: globalvalues 

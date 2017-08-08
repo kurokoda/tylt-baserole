@@ -13,6 +13,7 @@ spec:
         app: rethinkdb 
     spec:
       containers:
+
       #RethinkDB statefulset
       - image: rosskukulinski/rethinkdb-kubernetes
         args:
@@ -72,7 +73,7 @@ spec:
         - /bin/sh
         - -ec
         - |
-          pip install rethinkdb -v 
+          pip install rethinkdb 
           /usr/local/bin/rethinkdb-restore /mnt/tylt-rethink-prod/${RT_BACKUP_FILE}.tar.gz --force 
         envFrom:
         - configMapRef:
