@@ -16,7 +16,11 @@ spec:
       initContainers:
         - name: rdb-copy
           image: redis:3.2.9
-          command: ["/bin/sh", "-c", "ln -nsf /mnt/tylt-redis-prod/tylt-production_backup_$(date +"%Y-%m-%d" -d "yesterday")T06-00_utc.rdb /data/dump.rdb"]
+          command:
+            - /bin/sh
+            - -c
+            - |
+              ln -nsf /mnt/tylt-redis-prod/tylt-production_backup_$(date +"%Y-%m-%d" -d "yesterday")T06-00_utc.rdb /data/dump.rdb
           envFrom:
           - configMapRef:
               name: globalvalues
@@ -34,7 +38,11 @@ spec:
           lifecycle:
             postStart:
               exec:
-                command: ["/bin/sh", "-c", "ln -nsf /mnt/tylt-redis-prod/${REDIS_BACKUP_FILE}.rdb /data/dump.rdb"]
+          command:
+            - /bin/sh
+            - -c
+            - |
+              ln -nsf /mnt/tylt-redis-prod/tylt-production_backup_$(date +"%Y-%m-%d" -d "yesterday")T06-00_utc.rdb /data/dump.rdb
             preStop:
               exec:
                 command: ["/bin/sh", "-c", "echo 'Dump' > /mnt/tylt-redis-prod/test.txt"]
