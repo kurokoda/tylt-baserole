@@ -13,14 +13,24 @@ spec:
         name: redis-node
     spec:
       terminationGracePeriodSeconds: 10
+      initContainers:
+        - name: rdb-copy
+          image: redis:3.2
+          command: ["/bin/sh", "-c", "ln -nsf /mnt/tylt-redis-prod/${REDIS_BACKUP_FILE}.rdb /data/dump.rdb"]
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: backup-dir
+              mountPath: /mnt/tylt-redis-prod
+              readOnly: PRODUCTION_VAR
       containers:
         # Redis
         - name: redis-node
           image: redis:3.2
           lifecycle:
-            postStart:
-              exec:
-                command: ["/bin/sh", "-c", "ln -nsf /mnt/tylt-redis-prod/${REDIS_BACKUP_FILE}.rdb /data/dump.rdb"]
+          #  postStart:
+          #    exec:
+          #      command: ["/bin/sh", "-c", "ln -nsf /mnt/tylt-redis-prod/${REDIS_BACKUP_FILE}.rdb /data/dump.rdb"]
             preStop:
               exec:
                 command: ["/bin/sh", "-c", "echo 'Dump' > /mnt/tylt-redis-prod/test.txt"]
