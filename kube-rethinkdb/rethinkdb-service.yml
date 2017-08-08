@@ -5,26 +5,11 @@ metadata:
   name: rethinkdb
   annotations:
     traefik.backend.loadbalancer.sticky: true
-    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
 spec:
   clusterIP: None
   ports:
   - port: 8080
     name: admin
-  selector:
-    app: rethinkdb
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: rethinkdb
-  annotations:
-    traefik.backend.loadbalancer.sticky: true
-    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
-spec:
-  clusterIP: None
-  ports:
   - port: 29015
     name: cluster
   - port: 28015
