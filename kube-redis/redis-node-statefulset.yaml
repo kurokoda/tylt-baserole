@@ -20,7 +20,7 @@ spec:
             - /bin/sh
             - -ec
             - |
-              LATEST_DUMP=$(ls -Art /mnt/tylt-redis-prod/*.rdb | head -n1)
+              LATEST_DUMP=$(ls -Art /mnt/tylt-redis-prod/*.rdb | tail -n1)
               ln -nsf $LATEST_DUMP /data/dump.rdb
           envFrom:
           - configMapRef:
@@ -43,7 +43,7 @@ spec:
                   - /bin/sh
                   - -ec
                   - |
-                    LATEST_DUMP=$(ls -Art /mnt/tylt-redis-prod/*.rdb | head -n1)
+                    LATEST_DUMP=$(ls -Art /mnt/tylt-redis-prod/*.rdb | tail -n1)
                     ln -nsf $LATEST_DUMP /data/dump.rdb
             preStop:
               exec:
