@@ -12,27 +12,6 @@ spec:
       labels:
         app: rethinkdb 
     spec:
-      initContainers:
-
-      - image: dockerfile/rethinkdb
-        name: rethinkdb-init
-        command:
-        - /bin/bash
-        - ec
-        - |
-          pip install rethinkdb
-          rethinkdb --bind all &&
-          /usr/local/bin/rethinkdb-restore /mnt/tylt-rethink-prod/${RT_BACKUP_FILE}.tar.gz --force
-        envFrom:
-        - configMapRef:
-            name: globalvalues
-        volumeMounts:
-        - name: backup-dir
-          mountPath: /mnt/tylt-rethink-prod
-          readOnly: PRODUCTION_VAR
-        - mountPath: /data
-          name: data
-
       containers:
       #RethinkDB statefulset
       - image: rosskukulinski/rethinkdb-kubernetes
@@ -84,6 +63,25 @@ spec:
           exec:
             command:
               - /probe
+
+      #RethinkDB python sidecar
+      - image: python 
+        imagePullPolicy: Always
+        name: rethinkdb-sidecar
+        command: 
+        - /bin/sh
+        - -ec
+        - |
+          pip install rethinkdb -v 
+          /usr/local/bin/rethinkdb-restore /mnt/tylt-rethink-prod/${RT_BACKUP_FILE}.tar.gz --force 
+        envFrom:
+        - configMapRef:
+            name: globalvalues
+        volumeMounts:
+        - name: backup-dir
+          mountPath: /mnt/tylt-rethink-prod
+          readOnly: PRODUCTION_VAR
+
 
       dnsPolicy: ClusterFirst
       restartPolicy: Always
