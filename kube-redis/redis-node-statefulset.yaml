@@ -21,7 +21,7 @@ spec:
             - -ec
             - |
               LATEST_DUMP=$(ls -Art /mnt/tylt-redis-prod/*.rdb | head -n1)
-              ln -nsf /mnt/tylt-redis-prod/$LATEST_DUMP /data/dump.rdb
+              ln -nsf $LATEST_DUMP /data/dump.rdb
           envFrom:
           - configMapRef:
               name: globalvalues
@@ -44,7 +44,7 @@ spec:
                   - -ec
                   - |
                     LATEST_DUMP=$(ls -Art /mnt/tylt-redis-prod/*.rdb | head -n1)
-                    ln -nsf /mnt/tylt-redis-prod/$LATEST_DUMP /data/dump.rdb
+                    ln -nsf $LATEST_DUMP /data/dump.rdb
             preStop:
               exec:
                 command: ["/bin/sh", "-c", "echo 'Dump' > /mnt/tylt-redis-prod/test.txt"]
