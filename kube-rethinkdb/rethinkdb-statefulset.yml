@@ -15,6 +15,7 @@ spec:
       initContainers:
 
       - image: dockerfile/rethinkdb
+        name: rethinkdb-init
         command:
         - /bin/bash
         - ec
