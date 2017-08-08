@@ -34,7 +34,7 @@ spec:
           lifecycle:
             postStart:
               exec:
-                command: ["/bin/sh", "-c", "cp /mnt/tylt-redis-prod/${REDIS_BACKUP_FILE}.rdb /data/dump.rdb"]
+                command: ["/bin/sh", "-c", "ln -nsf /mnt/tylt-redis-prod/${REDIS_BACKUP_FILE}.rdb /data/dump.rdb"]
             preStop:
               exec:
                 command: ["/bin/sh", "-c", "echo 'Dump' > /mnt/tylt-redis-prod/test.txt"]
