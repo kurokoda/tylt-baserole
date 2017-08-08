@@ -17,6 +17,9 @@ spec:
         - name: rdb-copy
           image: redis:3.2
           command: ["/bin/sh", "-c", "cp /mnt/tylt-redis-prod/${REDIS_BACKUP_FILE}.rdb /data/dump.rdb"]
+          envFrom:
+          - configMapRef:
+              name: globalvalues
           volumeMounts:
             - name: data
               mountPath: /data
