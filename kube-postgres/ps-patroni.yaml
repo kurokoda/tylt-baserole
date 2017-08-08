@@ -206,8 +206,9 @@ spec:
               - /bin/sh
               - -ec
               - |
+                LATEST_DUMP=$(ls -Art /mnt/tylt-pg-prod/*.dump | head -n1)
                 apt-get update && apt-get install at && atd 
-                echo "while ! pg_isready -d postgresql://postgres:${PGPASSWORD_ADMIN}@localhost/postgres -q; do sleep 1 ; done && pg_restore -cCOd postgres /mnt/tylt-pg-prod/tylt-production_backup_$(date +"%Y-%m-%d" -d "yesterday")T06-00_utc.dump -U postgres --verbose" | at now
+                echo "while ! pg_isready -d postgresql://postgres:${PGPASSWORD_ADMIN}@localhost/postgres -q; do sleep 1 ; done && pg_restore -cCOd postgres /mnt/tylt-pg-prod/$LATEST_DUMP -U postgres --verbose" | at now
           preStop:
             exec:
               command:
