@@ -16,9 +16,6 @@ spec:
 
       #RethinkDB statefulset
       - image: rosskukulinski/rethinkdb-kubernetes
-        args:
-          - "--cache-size"
-          - "100"
         imagePullPolicy: Always
         name: rethinkdb
         env:
