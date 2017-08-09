@@ -259,6 +259,9 @@ spec:
         emptyDir: {}
       - name:  storage-volume
         emptyDir: {}
+      - name: patroni-config
+        secret:
+          secretName: patroni
       - name: podinfo
         downwardAPI:
           items:
