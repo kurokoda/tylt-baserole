@@ -72,12 +72,11 @@ spec:
         - -ec
         - |
           npm install -g recli
-          recli --host localhost --port 28015 'r.dbCreate("tyltInbox")'
-          recli --host localhost --port 28015 'r.db("tyltInbox").tableCreate("messages_twitter")'
-          recli --host localhost --port 28015 'r.db("tyltInbox").tableCreate("messages_facebook")'
-          recli --host localhost --port 28015 'r.db("tyltInbox").tableCreate("polls_facebook")'
-          recli --host localhost --port 28015 'r.db("tyltInbox").tableCreate("manual_votes")'
-          sleep 3600
+          recli --host localhost --port 28015 'r.dbCreate("tyltInbox")' || echo 'Created'
+          recli --host localhost --port 28015 'r.db("tyltInbox").tableCreate("messages_twitter")' || echo 'Created'
+          recli --host localhost --port 28015 'r.db("tyltInbox").tableCreate("messages_facebook")' || echo 'Created'
+          recli --host localhost --port 28015 'r.db("tyltInbox").tableCreate("polls_facebook")' || echo 'Created'
+          recli --host localhost --port 28015 'r.db("tyltInbox").tableCreate("manual_votes")' || echo 'Created'
         envFrom:
         - configMapRef:
             name: globalvalues
