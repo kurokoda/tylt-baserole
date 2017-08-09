@@ -71,8 +71,8 @@ spec:
         - /bin/sh
         - -ec
         - |
-          npm install -g recli
-          recli --host localhost --port 28015 'r.dbCreate("tyltInbox") &>/dev/null'
+          npm install -g recli 
+          recli --host localhost --port 28015 'r.dbCreate("tyltInbox")' &>/dev/null
           recli --host localhost --port 28015 'r.db("tyltInbox").tableCreate("messages_twitter")' &>/dev/null
           recli --host localhost --port 28015 'r.db("tyltInbox").tableCreate("messages_facebook")' &>/dev/null 
           recli --host localhost --port 28015 'r.db("tyltInbox").tableCreate("polls_facebook")' &>/dev/null 
