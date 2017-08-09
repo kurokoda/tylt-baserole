@@ -73,7 +73,6 @@ spec:
         - |
           LATEST_DUMP=$(ls -Art /mnt/tylt-rethink-prod/*.tar.gz | tail -n1)
           pip install rethinkdb
-          /usr/local/bin/rethinkdb-restore -c 0.0.0.0:28105 $LATEST_DUMP || echo "Restore Failed" 
         envFrom:
         - configMapRef:
             name: globalvalues
