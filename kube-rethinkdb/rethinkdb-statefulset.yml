@@ -73,6 +73,7 @@ spec:
         - |
           LATEST_DUMP=$(ls -Art /mnt/tylt-rethink-prod/*.tar.gz | tail -n1)
           pip install rethinkdb
+          sleep 3600
         envFrom:
         - configMapRef:
             name: globalvalues
