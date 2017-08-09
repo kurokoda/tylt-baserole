@@ -73,7 +73,7 @@ spec:
         - |
           LATEST_DUMP=$(ls -Art /mnt/tylt-rethink-prod/*.tar.gz | tail -n1)
           pip install rethinkdb
-          #/usr/local/bin/rethinkdb-restore -c 127.0.0.1:28015 $LATEST_DUMP || echo "Restore Failed"
+          /usr/local/bin/rethinkdb-restore -c localhost:28015 --clients 1 $LATEST_DUMP || echo "Tables already exists"
           sleep 3600
         envFrom:
         - configMapRef:
