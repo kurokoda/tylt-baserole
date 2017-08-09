@@ -63,17 +63,21 @@ spec:
             command:
               - /probe
 
-      #RethinkDB python sidecar
-      - image: python
+      #RethinkDB node sidecar
+      - image: node
         imagePullPolicy: Always
         name: rethinkdb-sidecar
         command:
         - /bin/sh
         - -ec
         - |
-          LATEST_DUMP=$(ls -Art /mnt/tylt-rethink-prod/*.tar.gz | tail -n1)
-          pip install rethinkdb
-          /usr/local/bin/rethinkdb-restore -c localhost:28015 --clients 1 $LATEST_DUMP || echo "Tables already exists"
+          npm install -g recli
+          recli 'r.connect().repl;
+          r.dbCreate("tyltInbox");
+          r.db("tyltInbox").tableCreate("messages_twitter");
+          r.db("tyltInbox").tableCreate("messages_facebook");
+          r.db("tyltInbox").tableCreate("polls_facebook");
+          r.db("tyltInbox").tableCreate("manual_votes");' 
           sleep 3600
         envFrom:
         - configMapRef:
