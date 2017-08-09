@@ -257,9 +257,6 @@ spec:
       volumes:
       - name: data
         emptyDir: {}
-      - name: patroni-config
-        secret:
-          secretName: patroni
       - name:  storage-volume
         emptyDir: {}
       - name: podinfo
