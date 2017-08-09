@@ -72,12 +72,10 @@ spec:
         - -ec
         - |
           npm install -g recli
-          sleep 360 
-          recli --host localhost --port 28015 'r.dbCreate("tyltInbox")' || :
-          recli --host localhost --port 28015 'r.db("tyltInbox").tableCreate("messages_twitter")' || : 
-          recli --host localhost --port 28015 'r.db("tyltInbox").tableCreate("messages_facebook")' || : 
-          recli --host localhost --port 28015 'r.db("tyltInbox").tableCreate("polls_facebook")' || : 
-          recli --host localhost --port 28015 'r.db("tyltInbox").tableCreate("manual_votes")' || :
+          recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("messages_twitter")' || : 
+          recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("messages_facebook")' || : 
+          recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("polls_facebook")' || : 
+          recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("manual_votes")' || :
         envFrom:
         - configMapRef:
             name: globalvalues
