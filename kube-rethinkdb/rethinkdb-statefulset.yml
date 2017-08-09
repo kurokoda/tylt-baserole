@@ -13,6 +13,7 @@ spec:
         app: rethinkdb 
     spec:
       containers:
+      restartPolicy: Never
 
       #RethinkDB statefulset
       - image: rosskukulinski/rethinkdb-kubernetes:2.3.5
