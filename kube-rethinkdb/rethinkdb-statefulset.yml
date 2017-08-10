@@ -64,7 +64,7 @@ spec:
               - /probe
 
       #RethinkDB node sidecar
-      - image: node
+      - image: python 
         imagePullPolicy: Always
         name: rethinkdb-sidecar
         command:
