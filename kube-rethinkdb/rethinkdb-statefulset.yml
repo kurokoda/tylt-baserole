@@ -12,7 +12,6 @@ spec:
       labels:
         app: rethinkdb 
     spec:
-      restartPolicy: Never
       containers:
 
       #RethinkDB statefulset
@@ -72,16 +71,19 @@ spec:
         - -c
         - |
           npm install -g recli
-          if recli --host localhost --port 28015 'r.dbCreate("tyltInbox")'; then
-          recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("messages_twitter")'
-          recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("messages_facebook")'
-          recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("polls_facebook")'
-          recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("manual_votes")'
+          if ![ "$(ls -A /data)" ]; then
+          	recli --host localhost --port 28015 'r.dbCreate("tyltInbox")
+          	recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("messages_twitter")'
+          	recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("messages_facebook")'
+          	recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("polls_facebook")'
+          	recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("manual_votes")'
           fi
         envFrom:
         - configMapRef:
             name: globalvalues
         volumeMounts:
+        - mountPath: /data
+          name: data
         - name: backup-dir
           mountPath: /mnt/tylt-rethink-prod
           readOnly: PRODUCTION_VAR
