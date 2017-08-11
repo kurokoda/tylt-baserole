@@ -67,11 +67,20 @@ spec:
         imagePullPolicy: Always
         name: rethinkdb-sidecar
         command:
-        - /bin/sh
+        - /bin/bash
         - -ec
         - |
           npm install -g recli
-          sleep 3600
+          recli --host localhost --port 28015 'r.dbCreate("tyltInbox")' 2&>1 || echo $?
+          echo $?
+          recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("messages_twitter")' 2&>1 || echo $?
+          echo $?
+          recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("messages_facebook")' 2&>1 || echo $?
+          echo $?
+          recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("polls_facebook")' 2&>1 || echo $?
+          echo $?
+          recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("manual_votes")' 2&>1 || echo $?
+          echo $?
         envFrom:
         - configMapRef:
             name: globalvalues
