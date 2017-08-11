@@ -71,11 +71,11 @@ spec:
         - -ec
         - |
           npm install -g recli
-          recli --host localhost --port 28015 'r.dbCreate("tyltInbox")' 2&>1 || echo $?
-          recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("messages_twitter")' 2&>1 || echo $?
-          recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("messages_facebook")' 2&>1 || echo $?
-          recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("polls_facebook")' 2&>1 || echo $?
-          recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("manual_votes")' 2&>1 || echo $?
+          recli --host localhost --port 28015 'r.dbCreate("tyltInbox")' || echo $?
+          recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("messages_twitter")' || echo $?
+          recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("messages_facebook")' || echo $?
+          recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("polls_facebook")' || echo $?
+          recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("manual_votes")' || echo $?
           while [ 1 -eq 1 ]; do sleep 10; done
         envFrom:
         - configMapRef:
