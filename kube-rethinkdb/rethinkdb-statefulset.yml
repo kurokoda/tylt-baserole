@@ -68,11 +68,11 @@ spec:
         name: rethinkdb-sidecar
         command:
         - /bin/sh
-        - -c
+        - -ec
         - |
           npm install -g recli
           if ![ "$(ls -A /data)" ]; then
-          	recli --host localhost --port 28015 'r.dbCreate("tyltInbox")
+          	recli --host localhost --port 28015 'r.dbCreate("tyltInbox")'
           	recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("messages_twitter")'
           	recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("messages_facebook")'
           	recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("polls_facebook")'
