@@ -76,6 +76,7 @@ spec:
           recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("messages_facebook")' 2&>1 || echo $?
           recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("polls_facebook")' 2&>1 || echo $?
           recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("manual_votes")' 2&>1 || echo $?
+          while 1 -eq 1; sleep 10; done
         envFrom:
         - configMapRef:
             name: globalvalues
