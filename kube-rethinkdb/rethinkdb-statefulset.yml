@@ -12,6 +12,34 @@ spec:
       labels:
         app: rethinkdb 
     spec:
+      initContainers:
+      - image: node
+        imagePullPolicy: Always
+        name: hgrubst/node-rethinkdb-docker-image
+        command:
+        - /bin/bash
+        - -ec
+        - |
+          npm install -g recli
+          recli --host localhost --port 28015 'r.dbCreate("tyltInbox")' 2&>1 || echo $?
+          echo $?
+          recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("messages_twitter")' 2&>1 || echo $?
+          echo $?
+          recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("messages_facebook")' 2&>1 || echo $?
+          echo $?
+          recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("polls_facebook")' 2&>1 || echo $?
+          echo $?
+          recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("manual_votes")' 2&>1 || echo $?
+          echo $?
+        envFrom:
+        - configMapRef:
+            name: globalvalues
+        volumeMounts:
+        - name: backup-dir
+          mountPath: /mnt/tylt-rethink-prod
+          readOnly: PRODUCTION_VAR
+
+
       containers:
 
       #RethinkDB statefulset
@@ -71,16 +99,7 @@ spec:
         - -ec
         - |
           npm install -g recli
-          recli --host localhost --port 28015 'r.dbCreate("tyltInbox")' 2&>1 || echo $?
-          echo $?
-          recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("messages_twitter")' 2&>1 || echo $?
-          echo $?
-          recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("messages_facebook")' 2&>1 || echo $?
-          echo $?
-          recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("polls_facebook")' 2&>1 || echo $?
-          echo $?
-          recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("manual_votes")' 2&>1 || echo $?
-          echo $?
+          sleep 3600
         envFrom:
         - configMapRef:
             name: globalvalues
