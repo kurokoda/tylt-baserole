@@ -43,13 +43,6 @@ spec:
           name: driver
         - containerPort: 29015
           name: cluster
-        resources:
-          limits:
-            cpu: 100m
-            memory: 256Mi
-          requests:
-            cpu: 100m
-            memory: 256Mi
         volumeMounts:
         - mountPath: /data
           name: data
