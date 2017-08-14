@@ -80,7 +80,7 @@ spec:
             - /bin/sh
             - -ec
             - |
-              ! pgrep -x "rethinkdb-restore"
+              pgrep -x "rethinkdb-restore"
           initialDelaySeconds: 10
       dnsPolicy: ClusterFirst
       restartPolicy: Always
