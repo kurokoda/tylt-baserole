@@ -8,11 +8,25 @@ metadata:
 spec:
   clusterIP: None
   ports:
-  - port: 8080
-    name: admin
   - port: 29015
     name: cluster
   - port: 28015
     name: driver
+  selector:
+    app: rethinkdb
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rethinkdb-admin
+  annotations:
+    traefik.backend.loadbalancer.sticky: true
+    service.beta.kubernetes.io/tolerate-unready-endpoints: "true"
+spec:
+  clusterIP: None
+  ports:
+  - port: 8080
+    name: admin
   selector:
     app: rethinkdb
