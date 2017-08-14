@@ -81,7 +81,7 @@ spec:
             - -ec
             - |
               ! pgrep -x "rethinkdb-restore"
-            initialDelaySeconds: 10
+          initialDelaySeconds: 10
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       volumes:
