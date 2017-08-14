@@ -246,9 +246,9 @@ spec:
         - containerPort: 5050
         env:
         - name: DEFAULT_USER
-          value: 'admin'
+          value: 'postgres'
         - name: DEFAULT_PASSWORD
-          value: 'password'
+          value: 'atomic'
         livenessProbe: &healthcheck
           tcpSocket:
             port: 5050
@@ -256,7 +256,7 @@ spec:
           <<: *healthcheck
         volumeMounts:
         - name: backup-dir
-          mountPath: /var/lib/pgadmin4/data/storage/pgadmin4/storage 
+          mountPath: /var/lib/pgadmin4/data/storage/admin 
           readOnly: PRODUCTION_VAR
 
       volumes:
