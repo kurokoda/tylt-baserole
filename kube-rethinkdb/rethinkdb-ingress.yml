@@ -12,5 +12,5 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: rethinkdb-admin
+          serviceName: rethinkdb
           servicePort: 8080
