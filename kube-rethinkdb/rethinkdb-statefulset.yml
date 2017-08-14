@@ -45,15 +45,18 @@ spec:
           name: cluster
         volumeMounts:
         - mountPath: /data
-          name: data
-        readinessProbe:
-          exec:
-            command:
-            - /probe
-        livenessProbe:
+          name: data 
+        livenessProbe: &healthcheck
           exec:
             command:
               - /probe
+          failureThreshold: 3
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        readinessProbe:
+          <<: *healthcheck
 
       #RethinkDB node sidecar
       - image: python
