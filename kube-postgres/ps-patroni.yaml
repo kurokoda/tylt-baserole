@@ -256,7 +256,7 @@ spec:
           <<: *healthcheck
         volumeMounts:
         - name: backup-dir
-          mountPath: /var/lib/pgadmin4/data/storage/admin 
+          mountPath: /var/lib/pgadmin4/data/storage/postgres 
           readOnly: PRODUCTION_VAR
 
       volumes:
