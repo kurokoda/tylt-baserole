@@ -21,7 +21,7 @@ spec:
             - -ec
             - |
               LATEST_DUMP=$(ls -Art /mnt/tylt-redis-prod/*.rdb | tail -n1)
-              ln -nsf $LATEST_DUMP /data/dump.rdb
+              cp -uf $LATEST_DUMP /data/dump.rdb
           envFrom:
           - configMapRef:
               name: globalvalues
@@ -44,10 +44,15 @@ spec:
                   - -ec
                   - |
                     LATEST_DUMP=$(ls -Art /mnt/tylt-redis-prod/*.rdb | tail -n1)
-                    ln -nsf $LATEST_DUMP /data/dump.rdb
+                    cp -uf $LATEST_DUMP /data/dump.rdb
             preStop:
               exec:
-                command: ["/bin/sh", "-c", "echo 'Dump' > /mnt/tylt-redis-prod/test.txt"]
+                command:
+                  - /bin/sh
+                  - -c
+                  - |
+                    redis-cli save
+                    cp /data/dump.rdb /mnt/tylt-redis-prod/tylt-production_backup_$(date -u +"%Y-%m-%dT%H-%M")_utc.rdb
           command:
             - redis-server
           args:
@@ -124,17 +129,15 @@ spec:
             - name: REDIS_SERVER_PORT
               value: '6379'
             - name: HTTP_AUTH_PASSWORD
-              value: 'admin'
-              #valueFrom:
-              #  configMapKeyRef:
-              #    name: globalvalues
-              #    key: REDISADM_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: globalvalues
+                  key: REDISADM_PASSWORD
             - name: HTTP_AUTH_USER
-              value: 'admin'
-              #valueFrom:
-              #  configMapKeyRef:
-              #    name: globalvalues
-              #    key: REDISADM_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: globalvalues
+                  key: REDISADM_USER
           envFrom:
           - configMapRef:
               name: globalvalues 

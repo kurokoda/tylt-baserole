@@ -215,7 +215,7 @@ spec:
               - /bin/sh
               - -ec
               - |
-                echo "Dump" > /mnt/tylt-pg-prod/test.txt
+                /usr/bin/pg_dump -CFc tylt-production > /home/deploy/data/backups/tylt-pg-prod/tylt-production_backup_$(date -u +"%Y-%m-%dT%H-%M")_utc.dump 
         ports:
         - containerPort: 8008
           protocol: TCP
