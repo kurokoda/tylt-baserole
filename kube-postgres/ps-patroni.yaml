@@ -244,6 +244,11 @@ spec:
         name: pgadmin
         ports:
         - containerPort: 5050
+        env:
+        - name: DEFAULT_USER
+          value: 'admin'
+        - name: DEFAULT_PASSWORD
+          value: 'password'
         livenessProbe: &healthcheck
           tcpSocket:
             port: 5050
@@ -251,7 +256,7 @@ spec:
           <<: *healthcheck
         volumeMounts:
         - name: backup-dir
-          mountPath: /mnt/tylt-pg-prod
+          mountPath: /var/lib/pgadmin4/data/storage/pgadmin4/storage 
           readOnly: PRODUCTION_VAR
 
       volumes:
