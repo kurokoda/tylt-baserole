@@ -7,7 +7,7 @@ metadata:
     traefik.frontend.priority: 10
 spec:
   rules:
-  - host: redisadm.NAMESPACE_VAR.kubernetes.thetylt.com
+  - host: redis.NAMESPACE_VAR.kubernetes.thetylt.com
     http:
       paths:
       - path: /
