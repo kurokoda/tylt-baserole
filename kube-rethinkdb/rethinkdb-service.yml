@@ -10,9 +10,12 @@ spec:
   ports:
   - port: 8080
     targetPort: admin
+    name: admin
   - port: 29015
-    targetPort: cluster 
+    targetPort: cluster
+    name: cluster 
   - port: 28015
     targetPort: driver
+    name: driver
   selector:
     app: rethinkdb
