@@ -68,7 +68,7 @@ spec:
         - |
           LATEST_DUMP=$(ls -Art /mnt/tylt-rethink-prod/*.tar.gz | tail -n1)
 
-          if [ PRODUCTION_VAR=false ]; then
+          if [ "PRODUCTION_VAR" = "false" ]; then
             npm install -g recli
             recli --host localhost --port 28015 'r.dbCreate("tyltInbox")' || echo $?
             recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("messages_twitter")' || echo $?
