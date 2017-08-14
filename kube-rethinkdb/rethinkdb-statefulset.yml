@@ -80,7 +80,7 @@ spec:
             - /bin/sh
             - -ec
             - |
-              pgrep -x "rethinkdb-restore"
+              ! pgrep -f "/usr/local/bin/python /usr/local/bin/rethinkdb-restore"
           initialDelaySeconds: 10
       dnsPolicy: ClusterFirst
       restartPolicy: Always
