@@ -97,7 +97,7 @@ spec:
             - -c
             - |
               ! pgrep -f "/usr/local/bin/[p]ython /usr/local/bin/rethinkdb-restore"
-          initialDelaySeconds: 10
+          initialDelaySeconds: 20
           periodSeconds: 10
       dnsPolicy: ClusterFirst
       restartPolicy: Always
