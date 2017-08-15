@@ -244,6 +244,14 @@ spec:
         name: pgadmin
         ports:
         - containerPort: 5050
+        lifecycle:
+          postStart:
+            exec:
+              command:
+              - /bin/sh
+              - -c
+              - |
+                echo '127.0.0.0.1	basic	basic' >> /etc/hosts
         env:
         - name: DEFAULT_USER
           value: 'postgres'
