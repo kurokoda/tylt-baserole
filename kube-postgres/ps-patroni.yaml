@@ -251,7 +251,7 @@ spec:
               - /bin/sh
               - -c
               - |
-                echo '127.0.0.0.1	basic	basic' >> /etc/hosts
+                echo '127.0.0.1	basic	basic' >> /etc/hosts
         env:
         - name: DEFAULT_USER
           value: 'postgres'
@@ -267,7 +267,7 @@ spec:
           <<: *healthcheck
         volumeMounts:
         - name: backup-dir
-          mountPath: /var/lib/pgadmin4/data/storage/postgres 
+          mountPath: /mnt/tylt-pg-prod 
           readOnly: PRODUCTION_VAR
 
       volumes:
