@@ -13,38 +13,12 @@ spec:
         name: redis-node
     spec:
       terminationGracePeriodSeconds: 10
-      initContainers:
-        - name: rdb-copy
-          image: redis:3.2.9
-          command:
-            - /bin/sh
-            - -ec
-            - |
-              LATEST_DUMP=$(ls -Art /mnt/tylt-redis-prod/*.rdb | tail -n1)
-              cp -uf $LATEST_DUMP /data/dump.rdb
-          envFrom:
-          - configMapRef:
-              name: globalvalues
-          volumeMounts:
-            - name: data
-              mountPath: /data
-            - name: backup-dir
-              mountPath: /mnt/tylt-redis-prod
-              readOnly: PRODUCTION_VAR
       containers:
 
         # Redis
         - name: redis-node
           image: redis:3.2.9
           lifecycle:
-            postStart:
-              exec:
-                command:
-                  - /bin/sh
-                  - -ec
-                  - |
-                    LATEST_DUMP=$(ls -Art /mnt/tylt-redis-prod/*.rdb | tail -n1)
-                    cp -uf $LATEST_DUMP /data/dump.rdb
             preStop:
               exec:
                 command:
@@ -54,7 +28,12 @@ spec:
                     redis-cli save
                     cp /data/dump.rdb /mnt/tylt-redis-prod/tylt-production_backup_$(date -u +"%Y-%m-%dT%H-%M")_utc.rdb
           command:
-            - redis-server
+            - /bin/sh
+            - -ec
+            - |
+              LATEST_DUMP=$(ls -Art /mnt/tylt-redis-prod/*.rdb | tail -n1)
+              cp -uf $LATEST_DUMP /data/dump.rdb
+              redis-server
           args:
             - /config/node.conf
           ports:
