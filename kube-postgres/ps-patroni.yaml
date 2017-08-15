@@ -240,7 +240,7 @@ spec:
           readOnly: PRODUCTION_VAR
 
       #adminer
-      - image: fenglc/pgadmin4 
+      - image: crunchydata/crunchy-pgadmin4:centos7-9.6-1.5 
         name: pgadmin
         ports:
         - containerPort: 5050
@@ -248,7 +248,10 @@ spec:
         - name: DEFAULT_USER
           value: 'postgres'
         - name: DEFAULT_PASSWORD
-          value: 'atomic'
+          valueFrom:
+            configMapKeyRef:
+              name: globalvalues
+              key: PGPASSWORD_ADMIN 
         livenessProbe: &healthcheck
           tcpSocket:
             port: 5050
