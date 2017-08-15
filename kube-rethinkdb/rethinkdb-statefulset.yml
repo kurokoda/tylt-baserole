@@ -68,22 +68,24 @@ spec:
         - |
           LATEST_DUMP=$(ls -Art /mnt/tylt-rethink-prod/*.tar.gz | tail -n1)
 
-          if [ "PRODUCTION_VAR" = "false" ]; then
+          if [ "$NAMESPACE" = "devint" ] || [ "$NAMESPACE" = "production" ]; then
+            pip install rethinkdb
+            /usr/local/bin/rethinkdb-restore $LATEST_DUMP -c localhost:28015 --clients 16 || echo "Restore Failed"
+          else
             npm install -g recli
             recli --host localhost --port 28015 'r.dbCreate("tyltInbox")' || echo $?
             recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("messages_twitter")' || echo $?
             recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("messages_facebook")' || echo $?
             recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("polls_facebook")' || echo $?
             recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("manual_votes")' || echo $?
-          else
-            pip install rethinkdb
-            /usr/local/bin/rethinkdb-restore $LATEST_DUMP -c localhost:28015 --clients 16 || echo "Restore Failed"
           fi
 
           while [ 1 -eq 1 ]; do sleep 10; done
-        envFrom:
-        - configMapRef:
-            name: globalvalues
+        env:
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
         volumeMounts:
         - name: backup-dir
           mountPath: /mnt/tylt-rethink-prod
