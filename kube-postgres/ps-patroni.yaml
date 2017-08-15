@@ -254,7 +254,7 @@ spec:
                 while ! curl --output /dev/null --silent --head --fail http://127.0.0.1:5050/login ; do sleep 1 ; done;
                 curl 'http://127.0.0.1:5050/preferences/2' -X PUT -H 'content-type: application/json' --data-binary '{"id":2,"value":"/usr/bin","cid":2,"mid":5}'
                 curl 'http://127.0.0.1:5050/preferences/3' -X PUT -H 'content-type: application/json' --data-binary '{"id":3,"value":"/usr/bin","cid":2,"mid":5}'
-                echo '127.0.0.1 basic   basic' >> /etc/hosts
+                echo '127.0.0.1	basic	basic' >> /etc/hosts
         env:
         livenessProbe: &healthcheck
           tcpSocket:
