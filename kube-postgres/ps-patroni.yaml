@@ -174,9 +174,12 @@ spec:
 
       #patroni
       - env:
+        - name: PGPASSWORD_ADMIN
+          value: atomic
+        - name: PGPASSWORD_STANDBY
+          value: atomic
         - name: SCOPE
           value: patroni
-        - name: USE_WALE
         - name: PGROOT
           value: /home/postgres/pgdata/pgroot
         - name: POD_NAMESPACE
