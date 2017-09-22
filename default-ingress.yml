@@ -33,3 +33,20 @@ spec:
         backend:
           serviceName: tylt-pusher-node
           servicePort: 80
+          
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: tylt-NAMESPACE_VAR-api
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+  - host: api.NAMESPACE_VAR.kubernetes.thetylt.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: tylt-ruby
+          servicePort: 80
