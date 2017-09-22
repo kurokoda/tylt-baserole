@@ -209,7 +209,7 @@ spec:
               - /bin/sh
               - -ec
               - |
-                LATEST_DUMP=$(ls -Art /mnt/tylt-pg-prod/*.dump | tail -n1)
+                LATEST_DUMP=$(ls -Art /mnt/backups/*.dump | tail -n1)
                 apt-get update && apt-get install at && atd 
                 echo "while ! pg_isready -d postgresql://postgres:${PGPASSWORD_ADMIN}@localhost/postgres -q; do sleep 1 ; done && pg_restore -cCOd postgres $LATEST_DUMP -U postgres --verbose" | at now
           preStop:
@@ -239,7 +239,7 @@ spec:
           mountPath: /mnt/podinfo
           readOnly: false
         - name: backup-dir
-          mountPath: /mnt/tylt-pg-prod
+          mountPath: /mnt/backups
           readOnly: PRODUCTION_VAR
 
       #adminer
@@ -257,7 +257,7 @@ spec:
                 while ! curl --output /dev/null --silent --head --fail http://127.0.0.1:5050/login ; do sleep 1 ; done;
                 curl 'http://127.0.0.1:5050/preferences/2' -X PUT -H 'content-type: application/json' --data-binary '{"id":2,"value":"/usr/bin","cid":2,"mid":5}'
                 curl 'http://127.0.0.1:5050/preferences/3' -X PUT -H 'content-type: application/json' --data-binary '{"id":3,"value":"/usr/bin","cid":2,"mid":5}'
-                echo '127.0.0.1	basic	basic' >> /etc/hosts
+                echo '127.0.0.1 basic basic' >> /etc/hosts
         env:
         livenessProbe: &healthcheck
           tcpSocket:
@@ -266,7 +266,7 @@ spec:
           <<: *healthcheck
         volumeMounts:
         - name: backup-dir
-          mountPath: /mnt/tylt-pg-prod 
+          mountPath: /mnt/backups 
           readOnly: PRODUCTION_VAR
 
       volumes:
