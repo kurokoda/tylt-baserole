@@ -26,12 +26,12 @@ spec:
                   - -c
                   - |
                     redis-cli save
-                    cp /data/dump.rdb /mnt/tylt-redis-prod/tylt-production_backup_$(date -u +"%Y-%m-%dT%H-%M")_utc.rdb
+                    cp /data/dump.rdb /mnt/backups/tylt-production_backup_$(date -u +"%Y-%m-%dT%H-%M")_utc.rdb
           command:
             - /bin/sh
             - -ec
             - |
-              LATEST_DUMP=$(ls -Art /mnt/tylt-redis-prod/*.rdb | tail -n1)
+              LATEST_DUMP=$(ls -Art /mnt/backups/*.rdb | tail -n1)
               cp -uf $LATEST_DUMP /data/dump.rdb
               redis-server
           args:
@@ -45,7 +45,7 @@ spec:
             - name: redis-config
               mountPath: /config
             - name: backup-dir
-              mountPath: /mnt/tylt-redis-prod
+              mountPath: /mnt/backups
               readOnly: PRODUCTION_VAR
           envFrom:
           - configMapRef:
