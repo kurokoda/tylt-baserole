@@ -224,6 +224,13 @@ spec:
           protocol: TCP
         - containerPort: 5432
           protocol: TCP
+        resources:
+          limits:
+            cpu: 150m
+            memory: 2.0Gi
+          requests:
+            cpu: 100m
+            memory: 1.5Gi
         livenessProbe: &healthcheck
           tcpSocket:
             port: 5432
