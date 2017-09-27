@@ -43,13 +43,6 @@ spec:
           name: driver
         - containerPort: 29015
           name: cluster
-        resources:
-          limits:
-            cpu: 150m
-            memory: 1.5Gi
-          requests:
-            cpu: 100m
-            memory: 1.0Gi
         volumeMounts:
         - mountPath: /data
           name: data 
@@ -75,17 +68,17 @@ spec:
         - |
           LATEST_DUMP=$(ls -Art /mnt/backups/*.tar.gz | tail -n1)
 
-          #if [ "$NAMESPACE" = "devint" ] || [ "$NAMESPACE" = "production" ]; then
+          if [ "$NAMESPACE" = "devint" ] || [ "$NAMESPACE" = "production" ]; then
             pip install rethinkdb
             /usr/local/bin/rethinkdb-restore $LATEST_DUMP -c localhost:28015 --clients 16 #|| echo "Restore Failed"
-          #else
-          #  npm install -g recli
-          #  recli --host localhost --port 28015 'r.dbCreate("tyltInbox")' || echo $?
-          #  recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("messages_twitter")' || echo $?
-          #  recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("messages_facebook")' || echo $?
-          #  recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("polls_facebook")' || echo $?
-          #  recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("manual_votes")' || echo $?
-          #fi
+          else
+            npm install -g recli
+            recli --host localhost --port 28015 'r.dbCreate("tyltInbox")' || echo $?
+            recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("messages_twitter")' || echo $?
+            recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("messages_facebook")' || echo $?
+            recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("polls_facebook")' || echo $?
+            recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("manual_votes")' || echo $?
+          fi
 
           while [ 1 -eq 1 ]; do sleep 10; done
         env:
