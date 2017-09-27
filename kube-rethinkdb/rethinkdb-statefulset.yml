@@ -52,7 +52,7 @@ spec:
             memory: 1.5Gi
           requests:
             cpu: 100m
-            memory: 1.0Gi
+            memory: 150Mi
         livenessProbe: &healthcheck
           exec:
             command:
