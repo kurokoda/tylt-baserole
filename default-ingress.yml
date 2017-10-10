@@ -4,6 +4,8 @@ metadata:
   name: tylt-edit
   annotations:
     kubernetes.io/ingress.class: traefik
+    traefik.frontend.rule.type: ReplacePath
+    ingress.kubernetes.io/rewrite-target: /#tab-active
 spec:
   rules:
   - host: edit.NAMESPACE_VAR.kubernetes.thetylt.com
