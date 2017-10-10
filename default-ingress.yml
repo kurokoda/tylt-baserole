@@ -5,13 +5,13 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: traefik
     traefik.frontend.rule.type: ReplacePath
-    ingress.kubernetes.io/rewrite-target: /
+    ingress.kubernetes.io/rewrite-target: /editors/sign_in
 spec:
   rules:
   - host: edit.NAMESPACE_VAR.kubernetes.thetylt.com
     http:
       paths:
-      - path: /editors/sign_in
+      - path: /
         backend:
           serviceName: tylt-ruby
           servicePort: 80
