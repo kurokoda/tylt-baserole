@@ -4,12 +4,13 @@ metadata:
   name: tylt-edit
   annotations:
     kubernetes.io/ingress.class: traefik
+    traefik.frontend.rule.type: ReplacePath
 spec:
   rules:
   - host: edit.NAMESPACE_VAR.kubernetes.thetylt.com
     http:
       paths:
-      - path: /
+      - path: /editors/sign_in
         backend:
           serviceName: tylt-ruby
           servicePort: 80
