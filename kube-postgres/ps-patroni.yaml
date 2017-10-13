@@ -201,7 +201,7 @@ spec:
         envFrom:
         - configMapRef:
             name: globalvalues
-        image: registry.opensource.zalan.do/acid/spilo-9.6:1.2-p17
+        image: registry.opensource.zalan.do/acid/spilo-9.6:latest
         imagePullPolicy: Always
         name: patroni
         lifecycle:
