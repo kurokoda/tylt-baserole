@@ -12,8 +12,6 @@ spec:
       annotations:
         pod.alpha.kubernetes.io/initialized: "true"
     spec:
-      nodeSelector:
-        failure-domain.beta.kubernetes.io/region: "us-east-1"
       containers:
       - command:
         - /bin/sh
