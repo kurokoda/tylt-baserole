@@ -221,6 +221,7 @@ spec:
         - -ec
         - |
         echo "169.254.169.254             instance-data" >> /etc/hosts
+        /launch.sh
         image: registry.opensource.zalan.do/acid/spilo-9.6:1.2-p26
         imagePullPolicy: Always
         name: patroni
