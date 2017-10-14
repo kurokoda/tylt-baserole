@@ -209,6 +209,8 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: status.podIP
+        - name: SCOPE
+          value: patroni
         envFrom:
         - configMapRef:
             name: globalvalues
