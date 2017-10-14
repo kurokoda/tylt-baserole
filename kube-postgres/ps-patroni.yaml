@@ -12,8 +12,6 @@ spec:
       annotations:
         pod.alpha.kubernetes.io/initialized: "true"
     spec:
-      nodeSelector:
-        failure-domain.beta.kubernetes.io/region: "us-east-1"
       containers:
       - command:
         - /bin/sh
@@ -202,12 +200,6 @@ spec:
             configMapKeyRef:
               name: globalvalues
               key: PG_CRON     
-        - name: PATRONI_CONFIGURATION
-          value: |
-            bootstrap:
-              pg_hba:
-                - hostnossl all all all reject
-                - hostssl   all all all md5
         - name: POD_IP
           valueFrom:
             fieldRef:
