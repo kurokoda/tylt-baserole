@@ -194,7 +194,7 @@ spec:
               apiVersion: v1
               fieldPath: metadata.namespace
         - name: ETCD_HOST
-          value: etcd.$(POD_NAMESPACE)svc.cluster.local:2379
+          value: etcd.$(POD_NAMESPACE).svc.cluster.local:2379
         - name: CALLBACK_SCRIPT
           value: callback_role.py
         - name: CRONTAB
@@ -213,8 +213,6 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: status.podIP
-        - name: SCOPE
-          value: patroni
         envFrom:
         - configMapRef:
             name: globalvalues
