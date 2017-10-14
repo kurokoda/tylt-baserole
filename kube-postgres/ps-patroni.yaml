@@ -176,6 +176,8 @@ spec:
 
       #patroni
       - env:
+        - name: KUBERNETES_SERVICE_HOST
+          value: 10.3.0.1
         - name: PGPASSWORD_ADMIN
           value: atomic
         - name: PGPASSWORD_STANDBY
