@@ -197,11 +197,22 @@ spec:
           valueFrom:
             configMapKeyRef:
               name: globalvalues
-              key: PG_CRON           
+              key: PG_CRON     
+        - name: PATRONI_CONFIGURATION
+          value: |
+            bootstrap:
+              pg_hba:
+                - hostnossl all all all reject
+                - hostssl   all all all md5
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.podIP
         envFrom:
         - configMapRef:
             name: globalvalues
-        image: registry.opensource.zalan.do/acid/spilo-9.6:latest
+        image: registry.opensource.zalan.do/acid/spilo-9.6:1.2-p26
         imagePullPolicy: Always
         name: patroni
         lifecycle:
