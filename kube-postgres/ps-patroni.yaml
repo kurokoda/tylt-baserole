@@ -4,7 +4,7 @@ metadata:
   name: patroni
 spec:
   serviceName: "etcd"
-  replicas: 1
+  replicas: REPLICAS_VAR
   template:
     metadata:
       labels:
