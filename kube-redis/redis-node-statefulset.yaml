@@ -6,7 +6,7 @@ metadata:
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
 spec:
   serviceName: redis-nodes
-  replicas: 1
+  replicas: REPLICAS_VAR
   template:
     metadata:
       labels:
