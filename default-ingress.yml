@@ -13,6 +13,7 @@ spec:
         backend:
           serviceName: tylt-ruby
           servicePort: 80
+          
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -27,18 +28,17 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: tylt-ruby
+          serviceName: tylt-ruby-varnish
           servicePort: 80
       - path: /socket.io
         backend:
           serviceName: tylt-pusher-node
           servicePort: 80
-          
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: tylt-NAMESPACE_VAR-api
+  name: tylt-api
   annotations:
     kubernetes.io/ingress.class: traefik
 spec:
@@ -48,5 +48,5 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: tylt-ruby
+          serviceName: tylt-ruby-varnish
           servicePort: 80
