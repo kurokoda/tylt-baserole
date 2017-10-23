@@ -5,7 +5,7 @@ metadata:
     app: rethinkdb
   name: rethinkdb
 spec:
-  replicas: 1
+  replicas: REPLICAS_VAR
   serviceName: rethinkdb
   template:
     metadata:
