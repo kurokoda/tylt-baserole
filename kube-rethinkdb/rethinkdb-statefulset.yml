@@ -74,7 +74,7 @@ spec:
         - -ec
         - |
           HOSTNAME=$(hostname)
-          echo ${HOSTNAME}
+          SET_ID=${HOSTNAME/*-/}
           LATEST_DUMP=$(ls -Art /mnt/backups/*.tar.gz | tail -n1)
 
           if [ "$NAMESPACE" = "devint" ] || [ "$NAMESPACE" = "production" ] && [ "$SET_ID" = "0" ]; then
