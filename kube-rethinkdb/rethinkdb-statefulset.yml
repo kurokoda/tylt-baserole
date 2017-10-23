@@ -73,9 +73,11 @@ spec:
         - /bin/sh
         - -ec
         - |
+          HOSTNAME=$(hostname)
+          SET_ID=${HOSTNAME/*-/}
           LATEST_DUMP=$(ls -Art /mnt/backups/*.tar.gz | tail -n1)
 
-          if [ "$NAMESPACE" = "devint" ] || [ "$NAMESPACE" = "production" ]; then
+          if [ "$NAMESPACE" = "devint" ] || [ "$NAMESPACE" = "production" ] && [ "$SET_ID" = "0" ]; then
             pip install rethinkdb
             /usr/local/bin/rethinkdb-restore $LATEST_DUMP -c localhost:28015 --clients 16 --force
           else
