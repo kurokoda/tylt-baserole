@@ -70,7 +70,7 @@ spec:
         imagePullPolicy: Always
         name: rethinkdb-sidecar
         command:
-        - /bin/sh
+        - /bin/bash
         - -ec
         - |
           HOSTNAME=$(hostname)
