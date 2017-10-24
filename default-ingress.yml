@@ -50,19 +50,3 @@ spec:
         backend:
           serviceName: tylt-ruby-varnish
           servicePort: 80
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: tylt-direct-api
-  annotations:
-    kubernetes.io/ingress.class: traefik
-spec:
-  rules:
-  - host: api.tylt-ruby.NAMESPACE_VAR.kubernetes.thetylt.com
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: tylt-ruby
-          servicePort: 80
