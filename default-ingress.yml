@@ -55,7 +55,7 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: tylt-NAMESPACE_VAR-vote
+  name: tylt-vote
   annotations:
     kubernetes.io/ingress.class: traefik
 spec:
