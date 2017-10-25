@@ -3,6 +3,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: rethinkdb
+  annotations:
+    traefik.backend.loadbalancer.stickiness=true
 spec:
   clusterIP: None
   ports:
