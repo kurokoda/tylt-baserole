@@ -50,3 +50,20 @@ spec:
         backend:
           serviceName: tylt-ruby-varnish
           servicePort: 80
+          
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: tylt-NAMESPACE_VAR-vote
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+  - host: NAMESPACE_VAR.kubernetes.tylt.vote
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: tylt-ruby-varnish
+          servicePort: 80
