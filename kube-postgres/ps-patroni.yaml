@@ -225,8 +225,12 @@ spec:
               - -ec
               - |
                 LATEST_DUMP=$(ls -Art /mnt/backups/*.dump | tail -n1)
-                apt-get update && apt-get install at && atd 
-                echo "while ! pg_isready -d postgresql://postgres:${PGPASSWORD_ADMIN}@localhost/postgres -q; do sleep 1 ; done && pg_restore -cCOd postgres $LATEST_DUMP -U postgres --verbose" | at now
+                HOSTNAME=$(hostname)
+                SET_ID=${HOSTNAME/*-/}
+                apt-get update && apt-get install at && atd
+                if [ "$SET_ID" = "0" ]; then
+                  echo "while ! pg_isready -d postgresql://postgres:${PGPASSWORD_ADMIN}@localhost/postgres -q; do sleep 1 ; done && pg_restore -cCOd postgres $LATEST_DUMP -U postgres --verbose" | at now
+                fi
           preStop:
             exec:
               command:
