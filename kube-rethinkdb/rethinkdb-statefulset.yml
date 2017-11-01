@@ -78,14 +78,14 @@ spec:
           pip install rethinkdb
           
           if recli --host localhost --port 28015 'r.db("tyltInbox").info()'; then
-            recli --host localhost --port 28015 'r.db('tyltInbox').table("messages_twitter").reconfigure({shards: 2, replicas: 2})'
-            recli --host localhost --port 28015 'r.db('tyltInbox').table("messages_twitter").rebalance()'
-            recli --host localhost --port 28015 'r.db('tyltInbox').table("messages_facebook").reconfigure({shards: 2, replicas: 2})'
-            recli --host localhost --port 28015 'r.db('tyltInbox').table("messages_facebook").rebalance()'
-            recli --host localhost --port 28015 'r.db('tyltInbox').table("polls_facebook").reconfigure({shards: 2, replicas: 2})'
-            recli --host localhost --port 28015 'r.db('tyltInbox').table("polls_facebook").rebalance()'
-            recli --host localhost --port 28015 'r.db('tyltInbox').table("manual_votes").reconfigure({shards: 2, replicas: 2})'
-            recli --host localhost --port 28015 'r.db('tyltInbox').table("manual_votes").rebalance()'
+            recli --host localhost --port 28015 'r.db("tyltInbox").table("messages_twitter").reconfigure({shards: 2, replicas: 2})'
+            recli --host localhost --port 28015 'r.db("tyltInbox").table("messages_twitter").rebalance()'
+            recli --host localhost --port 28015 'r.db("tyltInbox").table("messages_facebook").reconfigure({shards: 2, replicas: 2})'
+            recli --host localhost --port 28015 'r.db("tyltInbox").table("messages_facebook").rebalance()'
+            recli --host localhost --port 28015 'r.db("tyltInbox").table("polls_facebook").reconfigure({shards: 2, replicas: 2})'
+            recli --host localhost --port 28015 'r.db("tyltInbox").table("polls_facebook").rebalance()'
+            recli --host localhost --port 28015 'r.db("tyltInbox").table("manual_votes").reconfigure({shards: 2, replicas: 2})'
+            recli --host localhost --port 28015 'r.db("tyltInbox").table("manual_votes").rebalance()'
           else
             if [ "$NAMESPACE" = "devint" ] || [ "$NAMESPACE" = "production" ]; then
               /usr/local/bin/rethinkdb-restore $LATEST_DUMP -c localhost:28015 --clients 16 --force
