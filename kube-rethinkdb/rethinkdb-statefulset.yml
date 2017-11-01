@@ -76,8 +76,7 @@ spec:
           LATEST_DUMP=$(ls -Art /mnt/backups/*.tar.gz | tail -n1)
           npm install -g recli
           pip install rethinkdb
-          SHARDS=`recli --host localhost --port 28015 'r.db("rethinkdb").table("stats").getField("server").distinct().count()'`
-          echo $SHARDS
+          SHARDS=`recli -n --host localhost --port 28015 'r.db("rethinkdb").table("stats").getField("server").distinct().count()'`
           if recli --host localhost --port 28015 'r.db("tyltInbox").info()'; then
             recli --host localhost --port 28015 "r.db('tyltInbox').table('messages_twitter').reconfigure({shards: $SHARDS, replicas: $SHARDS})"
             recli --host localhost --port 28015 "r.db('tyltInbox').table('messages_twitter').rebalance()"
