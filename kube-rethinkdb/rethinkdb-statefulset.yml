@@ -74,7 +74,7 @@ spec:
         - -ec
         - |
           LATEST_DUMP=$(ls -Art /mnt/backups/*.tar.gz | tail -n1)
-          if recli --host localhost --port 28015 r.db("tyltInbox").info(); then
+          if recli --host localhost --port 28015 'r.db("tyltInbox").info()'; then
             echo "Place holder for shards"
           else
             if [ "$NAMESPACE" = "devint" ] || [ "$NAMESPACE" = "production" ]; then
