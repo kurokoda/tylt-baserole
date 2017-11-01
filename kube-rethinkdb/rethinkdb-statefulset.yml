@@ -74,14 +74,15 @@ spec:
         - -ec
         - |
           LATEST_DUMP=$(ls -Art /mnt/backups/*.tar.gz | tail -n1)
+          npm install -g recli
+          pip install rethinkdb
+          
           if recli --host localhost --port 28015 'r.db("tyltInbox").info()'; then
             echo "Place holder for shards"
           else
             if [ "$NAMESPACE" = "devint" ] || [ "$NAMESPACE" = "production" ]; then
-              pip install rethinkdb
               /usr/local/bin/rethinkdb-restore $LATEST_DUMP -c localhost:28015 --clients 16 --force
             else
-              npm install -g recli
               recli --host localhost --port 28015 'r.dbCreate("tyltInbox")' || echo $?
               recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("messages_twitter")' || echo $?
               recli --host localhost --port 28015 --database tyltInbox 'r.tableCreate("messages_facebook")' || echo $?
