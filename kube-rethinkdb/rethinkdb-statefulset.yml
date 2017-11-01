@@ -102,6 +102,18 @@ spec:
             fi
           fi
           while [ 1 -eq 1 ]; do sleep 10; done
+          
+        lifecycle:
+          preStop:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  recli --host localhost --port 28015 "r.db('tyltInbox').table('messages_twitter').reconfigure({emergencyRepair: 'unsafe_rollback'})"
+                  recli --host localhost --port 28015 "r.db('tyltInbox').table('messages_facebook').reconfigure({emergencyRepair: 'unsafe_rollback'})"
+                  recli --host localhost --port 28015 "r.db('tyltInbox').table('polls_facebook').reconfigure({emergencyRepair: 'unsafe_rollback'})"
+                  recli --host localhost --port 28015 "r.db('tyltInbox').table('manual_votes').reconfigure({emergencyRepair: 'unsafe_rollback'})"
         env:
         - name: NAMESPACE
           valueFrom:
