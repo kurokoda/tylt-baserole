@@ -76,19 +76,20 @@ spec:
           LATEST_DUMP=$(ls -Art /mnt/backups/*.tar.gz | tail -n1)
           HOSTNAME=$(hostname)
           SET_ID=${HOSTNAME/*-/}
+          SHARDS=$((SET_ID + 1))
           
           npm install -g recli
           pip install rethinkdb
           
           if recli --host localhost --port 28015 'r.db("tyltInbox").info()'; then
-            recli --host localhost --port 28015 "r.db('tyltInbox').table('messages_twitter').reconfigure({shards: $SET_ID, replicas: $SET_ID})"
-            recli --host localhost --port 28015 'r.db("tyltInbox").table("messages_twitter").rebalance()'
-            recli --host localhost --port 28015 "r.db('tyltInbox').table('messages_facebook').reconfigure({shards: $SET_ID, replicas: $SET_ID})"
-            recli --host localhost --port 28015 'r.db("tyltInbox").table("messages_facebook").rebalance()'
-            recli --host localhost --port 28015 "r.db('tyltInbox').table('polls_facebook').reconfigure({shards: $SET_ID, replicas: $SET_ID})"
-            recli --host localhost --port 28015 'r.db("tyltInbox").table("polls_facebook").rebalance()'
-            recli --host localhost --port 28015 "r.db('tyltInbox').table('manual_votes').reconfigure({shards: $SET_ID, replicas: $SET_ID})"
-            recli --host localhost --port 28015 'r.db("tyltInbox").table("manual_votes").rebalance()'
+            recli --host localhost --port 28015 "r.db('tyltInbox').table('messages_twitter').reconfigure({shards: $SHARDS, replicas: $SHARDS})"
+            recli --host localhost --port 28015 "r.db('tyltInbox').table('messages_twitter').rebalance()"
+            recli --host localhost --port 28015 "r.db('tyltInbox').table('messages_facebook').reconfigure({shards: $SHARDS, replicas: $SHARDS})"
+            recli --host localhost --port 28015 "r.db('tyltInbox').table('messages_facebook').rebalance()"
+            recli --host localhost --port 28015 "r.db('tyltInbox').table('polls_facebook').reconfigure({shards: $SHARDS, replicas: $SHARDS})"
+            recli --host localhost --port 28015 "r.db('tyltInbox').table('polls_facebook').rebalance()"
+            recli --host localhost --port 28015 "r.db('tyltInbox').table('manual_votes').reconfigure({shards: $SHARDS, replicas: $SHARDS})"
+            recli --host localhost --port 28015 "r.db('tyltInbox').table('manual_votes').rebalance()"
           else
             if [ "$NAMESPACE" = "devint" ] || [ "$NAMESPACE" = "production" ]; then
               /usr/local/bin/rethinkdb-restore $LATEST_DUMP -c localhost:28015 --clients 16 --force
