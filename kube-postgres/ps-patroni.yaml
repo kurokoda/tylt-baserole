@@ -213,7 +213,7 @@ spec:
         - -ec
         - |
           echo "169.254.169.254             instance-data" >> /etc/hosts
-          sleep 60
+          sleep 10
           /launch.sh
         image: registry.opensource.zalan.do/acid/spilo-9.6:1.2-p26
         imagePullPolicy: Always
@@ -250,6 +250,7 @@ spec:
         livenessProbe: &healthcheck
           tcpSocket:
             port: 5432
+          initialDelaySeconds: 20
         readinessProbe:
           <<: *healthcheck
         volumeMounts:
