@@ -213,6 +213,7 @@ spec:
         - -ec
         - |
           echo "169.254.169.254             instance-data" >> /etc/hosts
+          echo "127.0.0.1             basic" >> /etc/hosts
           sleep 10
           /launch.sh
         image: registry.opensource.zalan.do/acid/spilo-9.6:1.2-p26
@@ -278,7 +279,6 @@ spec:
               - /bin/sh
               - -c
               - |
-                echo '127.0.0.1 basic basic' >> /etc/hosts
                 while ! curl --output /dev/null --silent --head --fail http://127.0.0.1:5050/login ; do sleep 1 ; done;
                 curl 'http://127.0.0.1:5050/preferences/2' -X PUT -H 'content-type: application/json' --data-binary '{"id":2,"value":"/usr/bin","cid":2,"mid":5}'
                 curl 'http://127.0.0.1:5050/preferences/3' -X PUT -H 'content-type: application/json' --data-binary '{"id":3,"value":"/usr/bin","cid":2,"mid":5}'
