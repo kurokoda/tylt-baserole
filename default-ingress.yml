@@ -28,7 +28,7 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: tylt-ruby-varnish
+          serviceName: tylt-ruby
           servicePort: 80
       - path: /socket.io
         backend:
@@ -48,7 +48,7 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: tylt-ruby-varnish
+          serviceName: tylt-ruby
           servicePort: 80
           
 ---
@@ -65,5 +65,5 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: tylt-ruby-varnish
+          serviceName: tylt-ruby
           servicePort: 80
