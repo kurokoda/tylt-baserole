@@ -97,7 +97,7 @@ spec:
           readinessProbe:
             httpGet:
               host: redis.NAMESPACE_VAR.svc.cluster.local
-              port: 26379
+              port: 6379
           resources:
             requests:
               cpu: 25m
