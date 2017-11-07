@@ -95,8 +95,9 @@ spec:
             - name: pod-info
               mountPath: /etc/pod-info
           readinessProbe:
-            exec:
-              command: [ "cat", "booted" ]
+            httpGet:
+              host: redis.NAMESPACE_VAR.svc.cluster.local
+              port: 26379
           resources:
             requests:
               cpu: 25m
