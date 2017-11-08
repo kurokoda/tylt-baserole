@@ -15,8 +15,6 @@ spec:
           servicePort: 80
           
 ---
-msolonko@advancelocal.net
-
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
